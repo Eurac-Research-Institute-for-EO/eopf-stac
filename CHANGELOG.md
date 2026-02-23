@@ -4,11 +4,20 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [0.13.0] - 
+
+### Fixed
+- Add `zarr` dependency to pyproject.toml [#68](https://github.com/EOPF-Sample-Service/eopf-stac/issues/68)
+
+
 ## [0.12.0] - 2026-02-03
 
 ### Added
 
 - Add support for products converted with CPM 2.6.4 [#66](https://github.com/EOPF-Sample-Service/eopf-stac/issues/66)
+- Add option to output to file [#65](https://github.com/EOPF-Sample-Service/eopf-stac/pull/65)
+- Make the CLI executable [#64](https://github.com/EOPF-Sample-Service/eopf-stac/pull/64)
+
 
 ### Fixed
 
