@@ -1,4 +1,3 @@
-#FROM registry.eopf.copernicus.eu/cpm/eopf-cpm:2-5-3
 FROM python:3.11.7-slim
 
 # Any python libraries that require system libraries to be installed will likely
@@ -13,4 +12,4 @@ WORKDIR /eopf
 COPY . /eopf
 RUN python -m pip install --no-cache-dir --upgrade /eopf
 
-ENTRYPOINT ["python", "src/eopf_stac/main.py"]
+#ENTRYPOINT ["python", "src/eopf_stac/main.py"]
