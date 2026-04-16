@@ -38,7 +38,6 @@ def validate_env(url: str, dry_run: bool, output_file: Optional[str], env):
 
         if ENV_AWS_SECRET_ACCESS_KEY not in env:
             missing_vars.append(ENV_AWS_SECRET_ACCESS_KEY)
-
         if len(missing_vars) > 0:
             raise ValueError(f"The following enviroment variables are missing: {missing_vars}")
 
@@ -61,6 +60,11 @@ def main():
         action="store",
     )
     parser.add_argument(
+        "--collection-id",
+        help="Name of the STAC Collection to populate with the generated Items. If not provided, default will be used.", type=str,
+        action="store",
+    )
+    parser.add_argument(
         "--dry-run", help="Create STAC item without trying to insert it into the catalog", action="store_true"
     )
     parser.add_argument("--output-file", help="Save the STAC item as JSON to the specified file path", type=str)
@@ -74,12 +78,16 @@ def main():
 
     try:
         validate_env(args.URL, args.dry_run, args.output_file, os.environ)
-
         logger.debug("Opening metadata file ...")
         metadata = read_metadata(args.URL)
 
         logger.info(f"Creating STAC item for {args.URL} ...")
-        item = create_item(metadata=metadata, eopf_href=args.URL, source_uri=args.source_uri)
+        
+        collection = None
+        if args.collection_id:
+            collection=args.collection_id
+
+        item = create_item(metadata=metadata, eopf_href=args.URL, source_uri=args.source_uri, collection=collection)
         logger.debug(json.dumps(item.to_dict(), indent=4))
 
         if not args.dry_run:

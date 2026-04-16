@@ -50,7 +50,7 @@ def read_metadata(eopf_href: str) -> dict:
     return validate_metadata(zmetadata)
 
 
-def create_item(metadata: dict, eopf_href: str, source_uri: str | None) -> pystac.Item:
+def create_item(metadata: dict, eopf_href: str, source_uri: str | None, collection: str | None) -> pystac.Item:
     # Determine product type
     product_type = metadata[".zattrs"]["stac_discovery"].get("properties", {}).get("product:type")
     # workaround eopf-cpm 2.4.x
@@ -81,9 +81,10 @@ def create_item(metadata: dict, eopf_href: str, source_uri: str | None) -> pysta
     if cdse_scene_href is None:
         logger.warning("Unable to determine link to the original scene at CSDE STAC API!")
 
-    collection = PRODUCT_TYPE_TO_COLLECTION.get(product_type)
     if collection is None:
-        raise ValueError(f"No collection defined for product type '{product_type}'")
+        collection = PRODUCT_TYPE_TO_COLLECTION.get(product_type)
+        if collection is None:
+            raise ValueError(f"No collection defined for product type '{product_type}'")
 
     item = None
     if product_type in SUPPORTED_PRODUCT_TYPES_S1:
